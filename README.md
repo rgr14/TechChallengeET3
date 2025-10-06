@@ -21,7 +21,7 @@ This repository contains a Python pipeline to find houses similar to a user-prov
 
 ## Overview
 
-This application is intended to predict the nearest houses available for renting in five neighboods of Sao Paulo:
+This application is intended to predict the nearest houses available for renting in five neighboods of São Paulo:
 - **1**: Pinheiros
 - **2**: Alto de Pinheiros
 - **3**: Jaguare
@@ -65,10 +65,9 @@ venv\Scripts\activate     # Windows
 pip install -r requirements.txt
 ```
 
-## Usage
+## Installation
 
-1. Prepare your data: Place CSV files in ./database/data/. Ensure consistent column naming.
-2. Configure user input:
+1. Configure user input:
    Run the streamlit app
    ```bash
     streamlit run app.py
@@ -80,11 +79,11 @@ pip install -r requirements.txt
 
 ## Run the pipeline
 
-After filling in the information that you want at the input area, press the "Enviar dados" button.
+After filling in the information the user's input, press "Enviar dados" to run the application.
 
 ## Retrieve nearest apartments in relation to user-provided information
 
-To check on the features (url, rent, etc ...) of the 25 nearest apartments for renting, based on the user-provided information, open a terminal and run:
+To check on the features (url, rent, etc ...) of the 25 nearest apartments for renting, based on the user-provided information, open a terminal and run the following commands to open the interactive dashboard:
    ```bash
     python -m http.server 8000
    ```

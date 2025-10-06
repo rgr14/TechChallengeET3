@@ -83,7 +83,7 @@ def extract_dashboard_metrics(dataframe):
 
         # Market segments (sorted by average rent)
         segments = sorted(cluster_profiles, key=lambda x: x['avg_rent'])
-        segment_names = ['Economy', 'Mid-Market', 'Upper-Mid', 'Premium']
+        segment_names = ['Economy', 'Mid-Market', 'Upper-Mid', 'Premium', 'Luxury']
 
         market_segments = []
         for i, segment in enumerate(segments):
