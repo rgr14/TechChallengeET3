@@ -49,7 +49,6 @@ Those datasets were obtained from the QuintoAndar website (https://www.quintoand
 
 ```bash
 git clone https://github.com/ReginaldoAllves/Finding_Similar_Houses.git
-cd Finding_Similar_Houses
 ```
 
 2. Create a Python virtual environment
