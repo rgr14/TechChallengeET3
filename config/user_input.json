@@ -1,0 +1,16 @@
+{
+    "pet": 1,
+    "mobiliado": 1,
+    "metro_proximo": 0,
+    "area": 50.0,
+    "quartos": 2,
+    "suite": 1,
+    "banheiros": 1,
+    "aluguel": 4000.0,
+    "condominio": 800.0,
+    "iptu": 150.0,
+    "seguro_incendio": 30.0,
+    "taxa_servico": 0.0,
+    "total": 7000.0,
+    "cost_per_m2": 80.0
+}

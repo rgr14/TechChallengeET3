@@ -1,0 +1,130 @@
+{
+  "total_records": 4069,
+  "average_price": 6231.1531088719585,
+  "average_area": 86.34160727451463,
+  "total_clusters": 5,
+  "cluster_profiles": [
+    {
+      "cluster_id": 0,
+      "size": 1703,
+      "percentage": 41.9,
+      "avg_area": 31.6,
+      "median_area": 28.0,
+      "avg_rent": 4610.0,
+      "median_rent": 4223.0,
+      "avg_price_per_m2": 122.0,
+      "avg_rooms": 1.0,
+      "metro_access_pct": 91.0,
+      "furnished_pct": 78.0,
+      "pet_friendly_pct": 68.0
+    },
+    {
+      "cluster_id": 1,
+      "size": 257,
+      "percentage": 6.3,
+      "avg_area": 419.5,
+      "median_area": 400.0,
+      "avg_rent": 16890.0,
+      "median_rent": 16470.0,
+      "avg_price_per_m2": 40.0,
+      "avg_rooms": 4.4,
+      "metro_access_pct": 46.0,
+      "furnished_pct": 28.0,
+      "pet_friendly_pct": 85.0
+    },
+    {
+      "cluster_id": 2,
+      "size": 123,
+      "percentage": 3.0,
+      "avg_area": 176.7,
+      "median_area": 154.0,
+      "avg_rent": 18969.0,
+      "median_rent": 17533.0,
+      "avg_price_per_m2": 97.0,
+      "avg_rooms": 2.9,
+      "metro_access_pct": 64.0,
+      "furnished_pct": 41.0,
+      "pet_friendly_pct": 77.0
+    },
+    {
+      "cluster_id": 3,
+      "size": 849,
+      "percentage": 20.9,
+      "avg_area": 122.7,
+      "median_area": 96.0,
+      "avg_rent": 8236.0,
+      "median_rent": 8019.0,
+      "avg_price_per_m2": 67.0,
+      "avg_rooms": 2.6,
+      "metro_access_pct": 63.0,
+      "furnished_pct": 31.0,
+      "pet_friendly_pct": 80.0
+    },
+    {
+      "cluster_id": 4,
+      "size": 1137,
+      "percentage": 27.9,
+      "avg_area": 56.1,
+      "median_area": 50.0,
+      "avg_rent": 3374.0,
+      "median_rent": 3366.0,
+      "avg_price_per_m2": 55.0,
+      "avg_rooms": 1.7,
+      "metro_access_pct": 43.0,
+      "furnished_pct": 19.0,
+      "pet_friendly_pct": 73.0
+    }
+  ],
+  "market_segments": [
+    {
+      "name": "Economy",
+      "cluster_id": 4,
+      "market_size": 1137,
+      "market_percentage": 27.9,
+      "avg_rent": 3374.0,
+      "avg_area": 56.1,
+      "price_per_m2": 55.0,
+      "metro_access": 43.0
+    },
+    {
+      "name": "Mid-Market",
+      "cluster_id": 0,
+      "market_size": 1703,
+      "market_percentage": 41.9,
+      "avg_rent": 4610.0,
+      "avg_area": 31.6,
+      "price_per_m2": 122.0,
+      "metro_access": 91.0
+    },
+    {
+      "name": "Upper-Mid",
+      "cluster_id": 3,
+      "market_size": 849,
+      "market_percentage": 20.9,
+      "avg_rent": 8236.0,
+      "avg_area": 122.7,
+      "price_per_m2": 67.0,
+      "metro_access": 63.0
+    },
+    {
+      "name": "Premium",
+      "cluster_id": 1,
+      "market_size": 257,
+      "market_percentage": 6.3,
+      "avg_rent": 16890.0,
+      "avg_area": 419.5,
+      "price_per_m2": 40.0,
+      "metro_access": 46.0
+    },
+    {
+      "name": "Segment 5",
+      "cluster_id": 2,
+      "market_size": 123,
+      "market_percentage": 3.0,
+      "avg_rent": 18969.0,
+      "avg_area": 176.7,
+      "price_per_m2": 97.0,
+      "metro_access": 64.0
+    }
+  ]
+}

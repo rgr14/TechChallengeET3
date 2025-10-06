@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Análise de Dados</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <h1 class="text-3xl font-bold text-gray-900">Dashboard de Análise de Dados</h1>
+            <p class="text-gray-600 mt-2">Análise exploratória e clusterização de dados imobiliários</p>
+        </div>
+    </header>
+
+    <!-- Tabs Navigation -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex space-x-8">
+                <button onclick="switchTab('dashboard')"
+                        id="tab-dashboard"
+                        class="tab-button active py-4 px-1 border-b-2 border-blue-500 font-medium text-sm text-blue-600">
+                    📊 Dashboard
+                </button>
+                <button onclick="switchTab('data-table')"
+                        id="tab-data-table"
+                        class="tab-button py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                    📋 Resultado da Consulta
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Tab Content -->
+    <div id="dashboard-content" class="tab-content">
+        <!-- KPIs Section -->
+        <section class="max-w-7xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-2 bg-blue-100 rounded-lg">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total de Registros</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="total-records">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-2 bg-green-100 rounded-lg">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Preço Médio</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="average-price">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-2 bg-purple-100 rounded-lg">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Área Média</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="average-area">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-2 bg-orange-100 rounded-lg">
+                        <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Clusters Identificados</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="total-clusters">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 pb-12">
+        <!-- Seção 1: Exploração do Banco de Dados -->
+        <section class="mb-12">
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 border-b pb-3">
+                    1. Exploração do Banco de Dados
+                </h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- 1.1 Area Distribution -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">1.1 Distribuição de Área</h3>
+                        <div class="bg-white rounded border-2 border-dashed border-gray-300 h-64 flex items-center justify-center cursor-pointer"
+                             onclick="openModal('plots/area_distribution.png', 'Gráfico de distribuição de área')">
+                            <img src="plots/area_distribution.png"
+                                 alt="Gráfico de distribuição de área"
+                                 class="max-w-full max-h-full object-contain hover:opacity-80 transition-opacity">
+                        </div>
+                    </div>
+
+                    <!-- 1.2 Rent Distribution -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">1.2 Distribuição de Aluguel</h3>
+                        <div class="bg-white rounded border-2 border-dashed border-gray-300 h-64 flex items-center justify-center cursor-pointer"
+                             onclick="openModal('plots/rent_distribution.png', 'Gráfico de distribuição de aluguel')">
+                            <img src="plots/rent_distribution.png"
+                                 alt="Gráfico de distribuição de aluguel"
+                                 class="max-w-full max-h-full object-contain hover:opacity-80 transition-opacity">
+                        </div>
+                    </div>
+
+                    <!-- 1.3 Price per Neighborhood -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">1.3 Preço por Bairro</h3>
+                        <div class="bg-white rounded border-2 border-dashed border-gray-300 h-64 flex items-center justify-center cursor-pointer"
+                             onclick="openModal('plots/price_per_neighborhood.png', 'Gráfico de preço por bairro')">
+                            <img src="plots/price_per_neighborhood.png"
+                                 alt="Gráfico de preço por bairro"
+                                 class="max-w-full max-h-full object-contain hover:opacity-80 transition-opacity">
+                        </div>
+                    </div>
+
+                    <!-- 1.4 Correlation Matrix -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">1.4 Matriz de Correlação</h3>
+                        <div class="bg-white rounded border-2 border-dashed border-gray-300 h-64 flex items-center justify-center cursor-pointer"
+                             onclick="openModal('plots/correlation_matrix.png', 'Matriz de correlação')">
+                            <img src="plots/correlation_matrix.png"
+                                 alt="Matriz de correlação"
+                                 class="max-w-full max-h-full object-contain hover:opacity-80 transition-opacity">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 2: Clusterização -->
+        <section>
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 border-b pb-3">
+                    2. Clusterização
+                </h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- 2.1 Elbow Plot -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">2.1 Método do Cotovelo (sem outliers)</h3>
+                        <div class="bg-white rounded border-2 border-dashed border-gray-300 h-64 flex items-center justify-center cursor-pointer"
+                             onclick="openModal('plots/elbow_plot_without_outliers.png', 'Gráfico do método do cotovelo')">
+                            <img src="plots/elbow_plot_without_outliers.png"
+                                 alt="Gráfico do método do cotovelo"
+                                 class="max-w-full max-h-full object-contain hover:opacity-80 transition-opacity">
+                        </div>
+                    </div>
+
+                    <!-- 2.2 K-means Cluster Plot -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">2.2 Clusters K-means (sem outliers)</h3>
+                        <div class="bg-white rounded border-2 border-dashed border-gray-300 h-64 flex items-center justify-center cursor-pointer"
+                             onclick="openModal('plots/kmeans_cluster_plot_without_outliers.png', 'Gráfico de clusters K-means')">
+                            <img src="plots/kmeans_cluster_plot_without_outliers.png"
+                                 alt="Gráfico de clusters K-means"
+                                 class="max-w-full max-h-full object-contain hover:opacity-80 transition-opacity">
+                        </div>
+                    </div>
+
+                    <!-- 2.3 KNN Plot -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">2.3 Análise KNN</h3>
+                        <div class="bg-white rounded border-2 border-dashed border-gray-300 h-64 flex items-center justify-center cursor-pointer"
+                             onclick="openModal('plots/KNN.plot.png', 'Gráfico de análise KNN')">
+                            <img src="plots/KNN.plot.png"
+                                 alt="Gráfico de análise KNN"
+                                 class="max-w-full max-h-full object-contain hover:opacity-80 transition-opacity">
+                        </div>
+                    </div>
+
+                    <!-- 2.4 Cluster Price Boxplot -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">2.4 Boxplot de Preços por Cluster</h3>
+                        <div class="bg-white rounded border-2 border-dashed border-gray-300 h-64 flex items-center justify-center cursor-pointer"
+                             onclick="openModal('plots/clusters_price_boxplot.png', 'Boxplot de preços por cluster')">
+                            <img src="plots/clusters_price_boxplot.png"
+                                 alt="Boxplot de preços por cluster"
+                                 class="max-w-full max-h-full object-contain hover:opacity-80 transition-opacity">
+                        </div>
+                    </div>
+
+                    <!-- 2.5 Cluster Area Boxplot -->
+                    <div class="bg-gray-50 rounded-lg p-4 lg:col-span-2">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">2.5 Boxplot de Área por Cluster</h3>
+                        <div class="bg-white rounded border-2 border-dashed border-gray-300 h-64 flex items-center justify-center cursor-pointer"
+                             onclick="openModal('plots/clusters_area_boxplot.png', 'Boxplot de área por cluster')">
+                            <img src="plots/clusters_area_boxplot.png"
+                                 alt="Boxplot de área por cluster"
+                                 class="max-w-full max-h-full object-contain hover:opacity-80 transition-opacity">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Cluster Profiles Section -->
+    <section class="max-w-7xl mx-auto px-4 py-8" id="cluster-profiles-section" style="display: none;">
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 border-b pb-3">
+                Perfis dos Clusters
+            </h2>
+            <div id="cluster-profiles-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Cluster profiles will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Segments Section -->
+    <section class="max-w-7xl mx-auto px-4 py-8" id="market-segments-section" style="display: none;">
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 border-b pb-3">
+                Segmentos de Mercado
+            </h2>
+            <div id="market-segments-container" class="space-y-4">
+                <!-- Market segments will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+    </div>
+
+    <!-- Data Table Tab Content -->
+    <div id="data-table-content" class="tab-content hidden">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900">Tabela com os imóveis mais similares ao buscado</h2>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <label for="search-input" class="text-sm font-medium text-gray-700 mr-2">Buscar:</label>
+                            <input type="text" id="search-input" placeholder="Digite para filtrar..."
+                                   class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="flex items-center">
+                            <label for="records-per-page" class="text-sm font-medium text-gray-700 mr-2">Por página:</label>
+                            <select id="records-per-page" onchange="changeRecordsPerPage()"
+                                    class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="10">10</option>
+                                <option value="25" selected>25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtros -->
+                <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <span class="text-sm font-medium text-gray-700">Filtros:</span>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" id="filter-pet" onchange="applyFilters()"
+                                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                        <label for="filter-pet" class="ml-2 text-sm text-gray-700">🐾 Pet-friendly</label>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" id="filter-mobiliado" onchange="applyFilters()"
+                                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                        <label for="filter-mobiliado" class="ml-2 text-sm text-gray-700">🛋️ Mobiliado</label>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" id="filter-metro" onchange="applyFilters()"
+                                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                        <label for="filter-metro" class="ml-2 text-sm text-gray-700">🚇 Próximo ao metrô</label>
+                    </div>
+                    
+                    <button onclick="clearFilters()" 
+                            class="ml-4 px-3 py-1 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded-md transition-colors">
+                        ✕ Limpar filtros
+                    </button>
+                </div>
+
+                <!-- Loading State -->
+                <div id="table-loading" class="text-center py-8">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                    <p class="mt-2 text-gray-600">Carregando dados...</p>
+                </div>
+
+                <!-- Table Container -->
+                <div id="table-container" class="hidden overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr id="table-header">
+                                <!-- Headers will be dynamically generated -->
+                            </tr>
+                        </thead>
+                        <tbody id="table-body" class="bg-white divide-y divide-gray-200">
+                            <!-- Rows will be dynamically generated -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div id="pagination-container" class="hidden flex items-center justify-between mt-6">
+                    <div class="text-sm text-gray-700">
+                        Exibindo <span id="showing-from">1</span> a <span id="showing-to">25</span>
+                        de <span id="total-records-table">0</span> registros
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="previousPage()" id="prev-button"
+                                class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50">
+                            Anterior
+                        </button>
+                        <div id="page-numbers" class="flex space-x-1">
+                            <!-- Page numbers will be dynamically generated -->
+                        </div>
+                        <button onclick="nextPage()" id="next-button"
+                                class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50">
+                            Próximo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- No Data State -->
+                <div id="no-data" class="hidden text-center py-8">
+                    <p class="text-gray-500">Nenhum dado encontrado.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para exibir imagens grandes -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50 flex items-center justify-center p-4">
+        <div class="relative max-w-6xl max-h-full">
+            <!-- Botão de fechar -->
+            <button onclick="closeModal()"
+                    class="absolute top-4 right-4 text-white bg-black bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 z-10 transition-all">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+
+            <!-- Título da imagem -->
+            <div class="absolute top-4 left-4 bg-black bg-opacity-50 text-white px-3 py-2 rounded-lg z-10">
+                <h3 id="modalTitle" class="text-lg font-semibold"></h3>
+            </div>
+
+            <!-- Imagem -->
+            <img id="modalImage" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl">
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-12">
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <p class="text-center text-gray-600">Dashboard de Análise de Dados - Análise Exploratória e Clusterização</p>
+        </div>
+    </footer>
+
+    <script>
+        // Tab management
+        let currentTab = 'dashboard';
+        let tableData = [];
+        let filteredData = [];
+        let currentPage = 1;
+        let recordsPerPage = 25;
+
+        // Function to switch tabs
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active', 'border-blue-500', 'text-blue-600');
+                button.classList.add('border-transparent', 'text-gray-500');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabName + '-content').classList.remove('hidden');
+
+            // Add active class to selected tab button
+            const activeButton = document.getElementById('tab-' + tabName);
+            activeButton.classList.add('active', 'border-blue-500', 'text-blue-600');
+            activeButton.classList.remove('border-transparent', 'text-gray-500');
+
+            currentTab = tabName;
+
+            // Load table data if switching to data-table tab
+            if (tabName === 'data-table' && tableData.length === 0) {
+                loadTableData();
+            }
+        }
+
+        // Function to parse CSV with proper handling of quoted fields
+        function parseCSV(csvText) {
+            const result = [];
+            const lines = csvText.split('\n');
+
+            for (let line of lines) {
+                if (!line.trim()) continue;
+
+                const row = [];
+                let current = '';
+                let inQuotes = false;
+
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    const nextChar = line[i + 1];
+
+                    if (char === '"') {
+                        if (inQuotes && nextChar === '"') {
+                            // Escaped quote
+                            current += '"';
+                            i++; // Skip next quote
+                        } else {
+                            // Start or end of quoted field
+                            inQuotes = !inQuotes;
+                        }
+                    } else if (char === ',' && !inQuotes) {
+                        // Field separator
+                        row.push(current.trim());
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+
+                // Add the last field
+                row.push(current.trim());
+                result.push(row);
+            }
+
+            return result;
+        }
+
+        // Function to load CSV data for table
+        async function loadTableData() {
+            try {
+                const response = await fetch('tables/similar.houses.csv');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const csvText = await response.text();
+                const parsedData = parseCSV(csvText);
+
+                if (parsedData.length === 0) {
+                    showNoData();
+                    return;
+                }
+
+                // First row is headers
+                const headers = parsedData[0].map(h => h.replace(/"/g, '').trim());
+                const data = [];
+
+                // Process data rows
+                for (let i = 1; i < parsedData.length; i++) {
+                    const row = parsedData[i];
+                    if (row.length >= headers.length) {
+                        const rowData = {};
+                        headers.forEach((header, index) => {
+                            let value = row[index] || '';
+                            // Clean up the value
+                            value = value.replace(/^"/, '').replace(/"$/, '').trim();
+                            rowData[header] = value;
+                        });
+                        data.push(rowData);
+                    }
+                }
+
+                console.log('Loaded data:', data.length, 'records');
+                console.log('Headers:', headers);
+                console.log('Sample row:', data[0]);
+
+                tableData = data;
+                filteredData = [...data];
+
+                generateTableHeader(headers);
+                updateTable();
+                setupSearch();
+
+                document.getElementById('table-loading').classList.add('hidden');
+                document.getElementById('table-container').classList.remove('hidden');
+                document.getElementById('pagination-container').classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Error loading table data:', error);
+                document.getElementById('table-loading').classList.add('hidden');
+                document.getElementById('no-data').classList.remove('hidden');
+            }
+        }
+
+        // Function to generate table header
+        function generateTableHeader(headers) {
+            const headerRow = document.getElementById('table-header');
+            headerRow.innerHTML = '';
+
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.className = 'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider';
+
+                // Improve header display
+                let displayHeader = header.replace(/_/g, ' ');
+                displayHeader = displayHeader.charAt(0).toUpperCase() + displayHeader.slice(1);
+                th.textContent = displayHeader;
+
+                headerRow.appendChild(th);
+            });
+        }
+
+        // Function to update table with current page data
+        function updateTable() {
+            const startIndex = (currentPage - 1) * recordsPerPage;
+            const endIndex = startIndex + recordsPerPage;
+            const pageData = filteredData.slice(startIndex, endIndex);
+
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+
+            pageData.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-gray-50';
+
+                Object.entries(row).forEach(([key, value]) => {
+                    const td = document.createElement('td');
+                    td.className = 'px-6 py-4 text-sm text-gray-900';
+
+                    // Handle different types of data
+                    if (key === 'url' && value.startsWith('http')) {
+                        // URL field - show as link
+                        td.innerHTML = `<a href="${value}" target="_blank" class="text-blue-600 hover:text-blue-800 underline">Ver imóvel</a>`;
+                        td.className += ' max-w-32';
+                    } else if (key === 'title' && value.length > 50) {
+                        // Long title - truncate with tooltip
+                        td.innerHTML = `<span title="${value}" class="truncate block max-w-64">${value}</span>`;
+                    } else if (value.startsWith('R$')) {
+                        // Currency values
+                        td.textContent = value;
+                        td.className += ' text-right font-mono';
+                    } else if (key === 'area' || key === 'quartos' || key === 'banheiros') {
+                        // Numeric values
+                        td.textContent = value;
+                        td.className += ' text-center';
+                    } else if (value === 'sim' || value === 'não') {
+                        // Boolean values
+                        td.innerHTML = value === 'sim'
+                            ? '<span class="text-green-600 font-medium">✓ Sim</span>'
+                            : '<span class="text-red-600 font-medium">✗ Não</span>';
+                        td.className += ' text-center';
+                    } else {
+                        // Default text
+                        td.textContent = value;
+                        if (value.length > 30) {
+                            td.className += ' max-w-48 truncate';
+                            td.title = value;
+                        }
+                    }
+
+                    tr.appendChild(td);
+                });
+
+                tbody.appendChild(tr);
+            });
+
+            updatePaginationInfo();
+        }
+
+        // Function to update pagination info
+        function updatePaginationInfo() {
+            const totalRecords = filteredData.length;
+            const startIndex = (currentPage - 1) * recordsPerPage + 1;
+            const endIndex = Math.min(currentPage * recordsPerPage, totalRecords);
+
+            document.getElementById('showing-from').textContent = startIndex;
+            document.getElementById('showing-to').textContent = endIndex;
+            document.getElementById('total-records-table').textContent = totalRecords;
+
+            // Update pagination buttons
+            const totalPages = Math.ceil(totalRecords / recordsPerPage);
+            const prevButton = document.getElementById('prev-button');
+            const nextButton = document.getElementById('next-button');
+
+            prevButton.disabled = currentPage === 1;
+            nextButton.disabled = currentPage === totalPages;
+
+            if (prevButton.disabled) {
+                prevButton.classList.add('opacity-50');
+            } else {
+                prevButton.classList.remove('opacity-50');
+            }
+
+            if (nextButton.disabled) {
+                nextButton.classList.add('opacity-50');
+            } else {
+                nextButton.classList.remove('opacity-50');
+            }
+
+            // Generate page numbers
+            generatePageNumbers(totalPages);
+        }
+
+        // Function to generate page numbers
+        function generatePageNumbers(totalPages) {
+            const pageNumbersContainer = document.getElementById('page-numbers');
+            pageNumbersContainer.innerHTML = '';
+
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+            if (endPage - startPage < maxVisiblePages - 1) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                const button = document.createElement('button');
+                button.textContent = i;
+                button.onclick = () => goToPage(i);
+                button.className = `px-3 py-2 text-sm font-medium rounded-md ${
+                    i === currentPage
+                        ? 'bg-blue-600 text-white'
+                        : 'text-gray-700 bg-white border border-gray-300 hover:bg-gray-50'
+                }`;
+                pageNumbersContainer.appendChild(button);
+            }
+        }
+
+        // Pagination functions
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                updateTable();
+            }
+        }
+
+        function nextPage() {
+            const totalPages = Math.ceil(filteredData.length / recordsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateTable();
+            }
+        }
+
+        function goToPage(page) {
+            currentPage = page;
+            updateTable();
+        }
+
+        function changeRecordsPerPage() {
+            recordsPerPage = parseInt(document.getElementById('records-per-page').value);
+            currentPage = 1;
+            updateTable();
+        }
+
+        // Function to setup search functionality
+        function setupSearch() {
+            const searchInput = document.getElementById('search-input');
+            let searchTimeout;
+
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    const searchTerm = this.value.toLowerCase();
+
+                    if (searchTerm === '') {
+                        filteredData = [...tableData];
+                    } else {
+                        filteredData = tableData.filter(row => {
+                            return Object.values(row).some(value =>
+                                value.toLowerCase().includes(searchTerm)
+                            );
+                        });
+                    }
+
+                    currentPage = 1;
+                    updateTable();
+                }, 300);
+            });
+        }
+
+        // Function to show no data state
+        function showNoData() {
+            document.getElementById('table-loading').classList.add('hidden');
+            document.getElementById('table-container').classList.add('hidden');
+            document.getElementById('pagination-container').classList.add('hidden');
+            document.getElementById('no-data').classList.remove('hidden');
+        }
+
+        // Function to open modal with image
+        function openModal(imageSrc, title) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+
+            modalImage.src = imageSrc;
+            modalImage.alt = title;
+            modalTitle.textContent = title;
+            modalImage.style.height = '800px';
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        // Function to close modal
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // Close modal when clicking outside the image
+        document.getElementById('imageModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Function to format currency
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(value);
+        }
+
+        // Function to format number with thousands separator
+        function formatNumber(value) {
+            return new Intl.NumberFormat('pt-BR').format(value);
+        }
+
+        // Function to create cluster profile card
+        function createClusterProfileCard(cluster) {
+            return `
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg p-6 border border-blue-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-gray-900">Cluster ${cluster.cluster_id}</h3>
+                        <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+                            ${cluster.percentage}% do mercado
+                        </span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Propriedades:</span>
+                            <span class="font-semibold">${formatNumber(cluster.size)}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Aluguel médio:</span>
+                            <span class="font-semibold">${formatCurrency(cluster.avg_rent)}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Área média:</span>
+                            <span class="font-semibold">${cluster.avg_area} m²</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Preço/m²:</span>
+                            <span class="font-semibold">${formatCurrency(cluster.avg_price_per_m2)}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Quartos médio:</span>
+                            <span class="font-semibold">${cluster.avg_rooms}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Próximo ao metrô:</span>
+                            <span class="font-semibold">${cluster.metro_access_pct}%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Mobiliado:</span>
+                            <span class="font-semibold">${cluster.furnished_pct}%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Pet-friendly:</span>
+                            <span class="font-semibold">${cluster.pet_friendly_pct}%</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Function to create market segment card
+        function createMarketSegmentCard(segment) {
+            const colors = {
+                'Economy': 'bg-green-50 border-green-200',
+                'Mid-Market': 'bg-blue-50 border-blue-200',
+                'Upper-Mid': 'bg-purple-50 border-purple-200',
+                'Premium': 'bg-orange-50 border-orange-200'
+            };
+
+            const colorClass = colors[segment.name] || 'bg-gray-50 border-gray-200';
+
+            return `
+                <div class="${colorClass} rounded-lg p-6 border">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-gray-900">${segment.name.toUpperCase()}</h3>
+                        <span class="text-sm text-gray-600">Cluster ${segment.cluster_id}</span>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        <div>
+                            <p class="text-gray-600">Tamanho do Mercado</p>
+                            <p class="font-semibold">${formatNumber(segment.market_size)} (${segment.market_percentage}%)</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">Aluguel Médio</p>
+                            <p class="font-semibold">${formatCurrency(segment.avg_rent)}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">Área Média</p>
+                            <p class="font-semibold">${segment.avg_area} m²</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">Acesso ao Metrô</p>
+                            <p class="font-semibold">${segment.metro_access}%</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Function to load and display dashboard data
+        async function loadDashboardData() {
+            try {
+                const response = await fetch('dashboard_data.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Update KPIs
+                document.getElementById('total-records').textContent = formatNumber(data.total_records);
+                document.getElementById('average-price').textContent = formatCurrency(data.average_price);
+                document.getElementById('average-area').textContent = `${data.average_area.toFixed(1)} m²`;
+                document.getElementById('total-clusters').textContent = data.total_clusters;
+
+                // Display cluster profiles if available
+                if (data.cluster_profiles && data.cluster_profiles.length > 0) {
+                    const clusterContainer = document.getElementById('cluster-profiles-container');
+                    clusterContainer.innerHTML = data.cluster_profiles
+                        .map(cluster => createClusterProfileCard(cluster))
+                        .join('');
+                    document.getElementById('cluster-profiles-section').style.display = 'block';
+                }
+
+                // Display market segments if available
+                if (data.market_segments && data.market_segments.length > 0) {
+                    const segmentsContainer = document.getElementById('market-segments-container');
+                    segmentsContainer.innerHTML = data.market_segments
+                        .map(segment => createMarketSegmentCard(segment))
+                        .join('');
+                    document.getElementById('market-segments-section').style.display = 'block';
+                }
+
+                console.log('✅ Dashboard data loaded successfully');
+
+            } catch (error) {
+                console.error('❌ Error loading dashboard data:', error);
+
+                // Show fallback message
+                document.getElementById('total-records').textContent = 'N/A';
+                document.getElementById('average-price').textContent = 'N/A';
+                document.getElementById('average-area').textContent = 'N/A';
+                document.getElementById('total-clusters').textContent = 'N/A';
+
+                // Show error message in header
+                const header = document.querySelector('header p');
+                header.innerHTML = '<span class="text-red-600">⚠️ Dados não carregados. Execute: python generate_dashboard_data.py</span>';
+            }
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const filterPet = document.getElementById('filter-pet').checked;
+            const filterMobiliado = document.getElementById('filter-mobiliado').checked;
+            const filterMetro = document.getElementById('filter-metro').checked;
+
+            filteredData = tableData.filter(row => {
+                // Search filter
+                const matchesSearch = searchTerm === '' || Object.values(row).some(value =>
+                    value.toLowerCase().includes(searchTerm)
+                );
+
+                // Pet filter - busca por colunas que podem conter informação de pet
+                const matchesPet = !filterPet || 
+                    Object.entries(row).some(([key, value]) => 
+                        (key.toLowerCase().includes('pet') || key.toLowerCase().includes('animal')) && 
+                        value.toLowerCase() === 'sim'
+                    );
+
+                // Mobiliado filter - busca por colunas que podem conter informação de mobília
+                const matchesMobiliado = !filterMobiliado || 
+                    Object.entries(row).some(([key, value]) => 
+                        (key.toLowerCase().includes('mobil') || key.toLowerCase().includes('furnish')) && 
+                        value.toLowerCase() === 'sim'
+                    );
+
+                // Metro filter - busca por colunas que podem conter informação de metrô
+                const matchesMetro = !filterMetro || 
+                    Object.entries(row).some(([key, value]) => 
+                        (key.toLowerCase().includes('metro') || key.toLowerCase().includes('subway')) && 
+                        value.toLowerCase() === 'sim'
+                    );
+
+                return matchesSearch && matchesPet && matchesMobiliado && matchesMetro;
+            });
+
+            currentPage = 1;
+            updateTable();
+        }
+
+        function clearFilters() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('filter-pet').checked = false;
+            document.getElementById('filter-mobiliado').checked = false;
+            document.getElementById('filter-metro').checked = false;
+            applyFilters();
+        }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', loadDashboardData);
+    </script>
+</body>
+</html>
